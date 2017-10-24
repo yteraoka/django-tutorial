@@ -62,8 +62,8 @@ class QuestionIndexViewTests(TestCase):
         create_question(question_text='Past question.', days=-30)
         response = self.client.get(reverse('polls:index'))
         self.assertQuerysetEqual(
-            [q.question_text for q in response.context['latest_question_list']],
-            ["'Past question.'"]
+            response.context['latest_question_list'],
+            ['<Question: Past question.>']
         )
 
     def test_future_question(self):
@@ -85,8 +85,8 @@ class QuestionIndexViewTests(TestCase):
         create_question(question_text='Future question.', days=30)
         response = self.client.get(reverse('polls:index'))
         self.assertQuerysetEqual(
-            [q.question_text for q in response.context['latest_question_list']],
-            ["'Past question.'"]
+            response.context['latest_question_list'],
+            ['<Question: Past question.>']
         )
 
     def test_two_past_questions(self):
@@ -97,8 +97,8 @@ class QuestionIndexViewTests(TestCase):
         create_question(question_text='Past question 2.', days=-5)
         response = self.client.get(reverse('polls:index'))
         self.assertQuerysetEqual(
-            [q.question_text for q in response.context['latest_question_list']],
-            ["'Past question 2.'", "'Past question 1.'"]
+            response.context['latest_question_list'],
+            ['<Question: Past question 2.>', '<Question: Past question 1.>']
         )
 
 class QuestionDetailViewTests(TestCase):
